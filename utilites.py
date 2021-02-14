@@ -4,6 +4,7 @@ from numpy import load as nload
 from json import  dump as jdump
 from numpy import save as ndump
 from nltk.tokenize import WordPunctTokenizer
+from itertools import product
 
 from constants import MIN_WEIGHT
 
@@ -142,15 +143,18 @@ def compare(S1,S2):
     return count/max(len(S1), len(S2))
 
 def compare_phrase(P1, P2):
-    wa = P1.split()
-    wb = P2.split()
-    if len(wa) == len(wb):
-        k = 1
-        for a, b in zip(wa, wb):
-            k *= compare(a, b)
-    else:
-        k = 0
-    return k
+    P1 = P1.lower().split() if type(P1) == str else [ x.lower() for x in P1 ]
+    P2 = P2.lower().split() if type(P2) == str else [ x.lower() for x in P2 ]
+    n, v = 0, 0
+    for a, b in set([ tuple(sorted((a, b))) for a, b in product(P1, P2)]):
+        v += compare(a,b)
+        n += 1
+    return v / n
     
 if __name__ == "__main__":
     print(compare('привет', 'првиет'))
+    print(compare_phrase("В лесу родилась елочка", "в лесу она росла"))
+    print(compare_phrase("В лесу родилась елочка", "В лесу родилась полочка"))
+    print(compare_phrase("В лесу родилась елочка", "В лесу родилась елочка"))
+    print(compare_phrase("В лесу", "В лесу"))
+    
