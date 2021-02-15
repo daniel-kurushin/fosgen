@@ -10,10 +10,10 @@ for comp_key in competencies.keys():
     for comp in comp_key:
         for term in terms:
             v = compare_phrase(comp, term)
-            similarity += v
-            if v:
+            if v > 0.5:
+                similarity += v
                 similar_terms += [term]
-    if similarity > 0:
+    if similarity > 0.65:
         candidates += [(comp_key, competencies[comp_key]['code'], similarity, similar_terms)]
 
 candidates = sorted(candidates, key=lambda x:x[2], reverse=1)[:len(candidates)//4]
