@@ -5,7 +5,7 @@ from json import  dump as jdump
 from numpy import save as ndump
 from nltk.tokenize import WordPunctTokenizer
 from itertools import product
-
+from math import tanh
 #from constants import MIN_WEIGHT
 
 def load(filename):
@@ -152,7 +152,7 @@ def compare_phrase(P1, P2):
     for a, b in set([ tuple(sorted((a, b))) for a, b in product(P1, P2)]):
         v += compare(a,b)
         n += 1
-    return (v / n) / func(len(P1))
+    return tanh((v / n) / func(len(P1)))
     
 text = """Лексика, на первый взгляд, отталкивает дактиль. Мифопорождающее текстовое устройство кумулятивно. Ударение дает композиционный анализ. Генезис свободного стиха, в первом приближении, традиционен. Ю.Лотман, не дав ответа, тут же запутывается в проблеме превращения не-текста в текст, поэтому нет смысла утверждать, что художественная гармония диссонирует литературный анжамбеман, заметим, каждое стихотворение объединено вокруг основного философского стержня.
 
