@@ -14,7 +14,8 @@ sentences = load('intuit_sents.json')
 
 structure_table_dict = {}
 questions_by_competence = {}
-key_table_dict= {}
+key_table_dict = {}
+used_comps = {}
 
 for competence in competencies.keys():
     collected_questions = {}
@@ -42,9 +43,6 @@ def pk_table():
 def n_task():
     return [str(sum(structure_table_dict.values()))]
     
-def var_1():
-	return ["1"]
-
 def get_questions(n):
     rez = []
     m = 1
@@ -75,26 +73,41 @@ def get_questions(n):
         
     return rez
 
-def questions_1():
-	return get_questions(1)
-	
-def var_2():
-	return ["2"]
-	
-def questions_2():
-	return get_questions(2)
-	
-def var_3():
-	return ["3"]
-	
-def questions_3():
-	return get_questions(3)
-	
-def var_4():
-	return ["4"]
-	
-def questions_4():
-	return get_questions(4)
+def variants():
+    q_keys = list(questions.keys())
+    needed_comps = {}
+    for competence in set([ questions[q][1] for q in questions ]):
+        nq = max(1, len([ q for q in questions if questions[q][1] == competence]) // N_VARS)
+        needed_comps.update({competence:nq})
+    cycle = len(needed_comps)
+    np.random.shuffle(q_keys)
+    rez = []
+    i = 0
+    for v in range(N_VARS):
+        rez += ["# Тест по дисциплине «%s», вариант %s." % (COURSE, v)]
+        rez += ["Выберите вариент, наиболее подходящий для заполнения пропуска."]
+        for t in range(N_TASKS):
+            text, competence, answer, wrong = questions[q_keys[i]]
+            rez += ["%s. %s \n\n" % (t, text) ]
+            answers = [
+                (answer, 1),
+                (wrong[0], 0),
+                (wrong[1], 0),
+                (wrong[2], 0),
+            ]
+            np.random.shuffle(answers)
+            j, a = 0, "ъ"
+            for item in ITEMS:
+                rez += ["\t%s) %s \n\n" % (item, answers[j][0])]
+                if answers[j][1]:
+                    a = item
+                j += 1
+            key_table_dict.update({(v,t):a})
+            try:
+                used_comps[competence] += 1
+            except KeyError:
+                used_comps.update({competence:0})
+    return rez
 
 def ball_structure():
     a, b, c, d = list(range(N_TASKS))[::round(N_TASKS/4)]
@@ -118,7 +131,7 @@ def structure_table():
                 n += 1
         head = ". ".join(te(" ".join(text), strings=1, limit=6)[3:])
         if n > 0:
-            rez += ["|%s|%s|%s|" % (head, competencies[competence][0], structure_table_dict[competence])]
+            rez += ["|%s|%s|%s|" % (head, competencies[competence][0], used_comps[competence])]
     return rez
     
 def key_table():
