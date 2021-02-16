@@ -1,7 +1,4 @@
 from utilites import load, compare_phrase
-from pymorphy2 import MorphAnalyzer
-
-ma = MorphAnalyzer()
 
 terms = [ t.lower() for t in load('intuit_terms.json') ]
 
