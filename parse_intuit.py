@@ -1,14 +1,6 @@
 from requests import get
 from bs4 import BeautifulSoup
-
-HOST = 'https://intuit.ru'
-URL = '%s/studies/courses/3647/889/info' % HOST
-URL = '%s/studies/courses/3574/816/info' % HOST
-URL = 'https://intuit.ru/studies/courses/23/23/info'
-URL = 'https://intuit.ru/studies/courses/3609/851/info'
-
-COURSE = "Администрирование информационных систем"
-COURSE = "Информационные технологии и вычислительные системы"
+from constants import URL, COURSE, HOST
 
 def get_lectures_urls(url):
     index_soup = BeautifulSoup(get(url).content, "lxml")
@@ -28,7 +20,8 @@ for lecture_url in get_lectures_urls(URL):
             lecture_soup = BeautifulSoup(get(a_url).content, "lxml")
             a_html = lecture_soup.find('div', {'id':"center-panel"})
             assert 'неправильно указали адрес страницы' not in a_html.text
-            lecture_html += a_html.prettify()
+            course_html = a_html.find('div', {'class':"eoi spelling-content-entity"})
+            lecture_html += course_html.prettify()
         except AssertionError as e:
             break
 
