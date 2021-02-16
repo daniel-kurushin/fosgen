@@ -4,9 +4,7 @@ from rutermextract import TermExtractor
 from bs4 import BeautifulSoup
 from utilites import dump, load
 from get_intuit_sentences import get_normal_form
-
-COURSE = "Администрирование информационных систем"
-COURSE = "Информационные технологии и вычислительные системы"
+from constants import COURSE
 
 te = TermExtractor()
 
