@@ -15,8 +15,9 @@ for comp_key in competencies.keys():
                 similar_terms += [term]
     if similarity > 0.65:
         candidates += [(comp_key, competencies[comp_key]['code'], similarity, similar_terms)]
+        print(competencies[comp_key]['code'])
 
-candidates = sorted(candidates, key=lambda x:x[2], reverse=1)[:len(candidates)//4]
+candidates = sorted(candidates, key=lambda x:x[2], reverse=1)
 
 prof_competencies = {}
 
