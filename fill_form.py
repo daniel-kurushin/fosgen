@@ -3,6 +3,7 @@ from rutermextract import TermExtractor
 import numpy as np
 
 ITEMS = "абвг"
+COURSE = "Информационные технологии и вычислительные системы"
 
 te = TermExtractor()
 
@@ -24,7 +25,7 @@ for competence in competencies.keys():
         questions_by_competence.update({competence:collected_questions})
 
 def discipline():
-    return ["Администрирование информационных систем"]
+    return [COURSE]
     
 def opk():
     return [ x for x in questions_by_competence.keys() if x.startswith('ПК') ]
@@ -151,6 +152,6 @@ template = open('template/template.md').read()
 for k in keys.keys():
     print(k)
     template = template.replace(k,"\n".join(keys[k]()))
-open('/tmp/out','w').write(template)
+open('out/%s.md' % COURSE,'w').write(template)
     
         
