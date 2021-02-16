@@ -1,9 +1,9 @@
 from utilites import load
 from rutermextract import TermExtractor
 import numpy as np
+from constants import COURSE, N_TASKS, N_VARS
 
 ITEMS = "абвг"
-COURSE = "Информационные технологии и вычислительные системы"
 
 te = TermExtractor()
 
@@ -95,6 +95,15 @@ def var_4():
 	
 def questions_4():
 	return get_questions(4)
+
+def ball_structure():
+    a, b, c, d = list(range(N_TASKS))[::round(N_TASKS/4)]
+    rez =  ["0 ÷ %s баллов — «неудовлетворительно»" % b]
+    rez += ["%s ÷ %s баллов — «удовлетворительно»" % (b+1, c)]
+    rez += ["%s ÷ %s баллов — «хорошо»" % (c+1, d)]
+    rez += ["%s ÷ %s баллов — «отлично»" % (d+1, N_TASKS)]
+    
+    return rez
 	
 def structure_table():
     rez = []
@@ -135,14 +144,8 @@ keys = {
     "{pk}": pk,
     "{opk_table}": opk_table,
     "{pk_table}": pk_table,
-    "{var_1}":var_1,
-    "{questions_1}":questions_1,
-    "{var_2}":var_2,
-    "{questions_2}":questions_2,
-    "{var_3}":var_3,
-    "{questions_3}":questions_3,
-    "{var_4}":var_4,
-    "{questions_4}":questions_4,
+    "{variants}": variants,
+    "{ball_structure}": ball_structure,
     "{structure_table}": structure_table,
     "{n_task}": n_task,
     "{key_table}": key_table,
@@ -154,4 +157,3 @@ for k in keys.keys():
     template = template.replace(k,"\n".join(keys[k]()))
 open('out/%s.md' % COURSE,'w').write(template)
     
-        
