@@ -5,6 +5,9 @@ from bs4 import BeautifulSoup
 from utilites import dump, load
 from get_intuit_sentences import get_normal_form
 
+COURSE = "Администрирование информационных систем"
+COURSE = "Информационные технологии и вычислительные системы"
+
 te = TermExtractor()
 
 try:
@@ -12,7 +15,8 @@ try:
 except FileNotFoundError:
     word_normal_form = {}
     
-text = BeautifulSoup(open('in/Администрирование информационных систем.html').read(),'lxml').text
+text = BeautifulSoup(open('in/%s.html' % COURSE).read(),'lxml').text
+
 terms = te(text)
 terms = [ (str(t), t.count) for t in te(text) if str(t).count(" ") > 1 and len(re.sub(r'[a-z0-9]', '', str(t)).strip())/len(str(t)) > 3/4 ]
 out = []

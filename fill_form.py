@@ -62,10 +62,11 @@ def get_questions(n):
             m += 1
             np.random.shuffle(answers)
             for item in ITEMS:
-                q += "%s) %s \n\n" % (item, answers[j][0])
+                q += "\t%s) %s \n\n" % (item, answers[j][0])
                 if answers[j][1]:
                     a = item
                 j += 1
+            q += "\n"
             key_table_dict.update({(n,k):a})
             rez += [q]
         if n == 1: 

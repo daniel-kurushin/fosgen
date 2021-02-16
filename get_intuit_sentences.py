@@ -7,6 +7,9 @@ from nltk.tokenize import PunktSentenceTokenizer
 from nltk.tokenize import WordPunctTokenizer
 from pymorphy2 import MorphAnalyzer
 
+COURSE = "Администрирование информационных систем"
+COURSE = "Информационные технологии и вычислительные системы"
+
 pst = PunktSentenceTokenizer()
 wpt = WordPunctTokenizer()
 ma = MorphAnalyzer()
@@ -28,7 +31,7 @@ try:
 except FileNotFoundError:
     word_normal_form = {}
 
-text = BeautifulSoup(open('in/Администрирование информационных систем.html').read(),'lxml').text
+text = BeautifulSoup(open('in/%s.html' % COURSE).read(),'lxml').text
 
 try:
     stop_words = set(load('stop_words.json'))
