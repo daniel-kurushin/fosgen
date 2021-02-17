@@ -1,6 +1,6 @@
 from requests import get
 from bs4 import BeautifulSoup
-from constants import URL, COURSE, HOST
+from _constants import URL, COURSE, HOST
 
 def get_lectures_urls(url):
     index_soup = BeautifulSoup(get(url).content, "lxml")

@@ -1,7 +1,7 @@
 from utilites import load
 from rutermextract import TermExtractor
 import numpy as np
-from constants import COURSE, N_TASKS, N_VARS
+from _constants import COURSE, N_TASKS, N_VARS
 
 ITEMS = "абвг"
 
@@ -79,7 +79,6 @@ def variants():
     for competence in set([ questions[q][1] for q in questions ]):
         nq = max(1, len([ q for q in questions if questions[q][1] == competence]) // N_VARS)
         needed_comps.update({competence:nq})
-    cycle = len(needed_comps)
     np.random.shuffle(q_keys)
     rez = []
     i = 0
@@ -88,7 +87,8 @@ def variants():
         rez += ["Выберите вариент, наиболее подходящий для заполнения пропуска."]
         for t in range(N_TASKS):
             text, competence, answer, wrong = questions[q_keys[i]]
-            rez += ["%s. %s \n\n" % (t, text) ]
+            i += 1
+            rez += ["%s. %s \n\n" % (t+1, text) ]
             answers = [
                 (answer, 1),
                 (wrong[0], 0),
@@ -131,24 +131,20 @@ def structure_table():
                 n += 1
         head = ". ".join(te(" ".join(text), strings=1, limit=6)[3:])
         if n > 0:
-            rez += ["|%s|%s|%s|" % (head, competencies[competence][0], used_comps[competence])]
+            try:
+                rez += ["|%s|%s|%s|" % (head, competencies[competence][0], used_comps[competence])]
+            except KeyError:
+                pass
     return rez
     
 def key_table():
-    variants = list(set([ k[0] for k in key_table_dict.keys() ]))
-    all_questions = []
-    for variant in variants:
-        var_questions = [ k[1] for k in key_table_dict.keys() if k[0] == variant ]
-        all_questions += [var_questions]
-    A = len(all_questions)+1
-    B = len(all_questions[0])
-    rez = []
-    for i in range(1,B):
-        s = ""
-        for j in range(1,A):
-            s += "|%s) %s" % (i, key_table_dict[(j,i)])
-        s += "|"
-        rez += [s]
+    rez = ["|%s|" % "|".join(["Вариант %s" % (s+1) for s in range(N_VARS)])]
+    rez += ["|%s|" % "|".join([":-:" for s in range(N_VARS)])]
+    for t in range(N_TASKS):    
+        l = "|"
+        for v in range(N_VARS):
+            l += " %s) %s |" % (v+1, key_table_dict[(v,t)])
+        rez += [l]
     return rez
 
 keys = {

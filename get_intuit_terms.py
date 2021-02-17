@@ -4,7 +4,7 @@ from rutermextract import TermExtractor
 from bs4 import BeautifulSoup
 from utilites import dump, load
 from get_intuit_sentences import get_normal_form
-from constants import COURSE
+from _constants import COURSE
 
 te = TermExtractor()
 

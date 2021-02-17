@@ -6,7 +6,7 @@ from utilites import dump, load
 from nltk.tokenize import PunktSentenceTokenizer 
 from nltk.tokenize import WordPunctTokenizer
 from pymorphy2 import MorphAnalyzer
-from constants import COURSE
+from _constants import COURSE
 
 pst = PunktSentenceTokenizer()
 wpt = WordPunctTokenizer()
