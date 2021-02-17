@@ -1,6 +1,7 @@
 from utilites import load
 from rutermextract import TermExtractor
 import numpy as np
+import re
 from _constants import COURSE, N_TASKS, N_VARS
 
 ITEMS = "абвг"
@@ -84,11 +85,11 @@ def variants():
     i = 0
     for v in range(N_VARS):
         rez += ["# Тест по дисциплине «%s», вариант %s." % (COURSE, v)]
-        rez += ["Выберите вариент, наиболее подходящий для заполнения пропуска."]
+        rez += ["Выберите вариант, наиболее подходящий для заполнения пропуска."]
         for t in range(N_TASKS):
             text, competence, answer, wrong = questions[q_keys[i]]
             i += 1
-            rez += ["%s. %s \n\n" % (t+1, text) ]
+            rez += ["%s. %s \n\n" % (t+1, re.sub(r"(_ )+", "___", text)) ]
             answers = [
                 (answer, 1),
                 (wrong[0], 0),
@@ -143,7 +144,7 @@ def key_table():
     for t in range(N_TASKS):    
         l = "|"
         for v in range(N_VARS):
-            l += " %s) %s |" % (v+1, key_table_dict[(v,t)])
+            l += " %s) %s |" % (t+1, key_table_dict[(v,t)])
         rez += [l]
     return rez
 
