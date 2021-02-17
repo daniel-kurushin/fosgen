@@ -2,9 +2,9 @@ MIN_WEIGHT = 0.01
 
 COURSE = "Администрирование информационных систем"
 COURSE = "Информационные технологии и вычислительные системы"
-#COURSE = "Управление ИТ инфраструктурой"
-#COURSE = "Анализ информационных технологий"
-#COURSE = "Интеллектуальные информационные технологии"
+COURSE = "Управление ИТ инфраструктурой"
+COURSE = "Анализ информационных технологий"
+COURSE = "Интеллектуальные информационные технологии"
 
 HOST = 'https://intuit.ru'
 URL = '%s/studies/courses/3647/889/info' % HOST
@@ -16,7 +16,7 @@ URL = 'https://intuit.ru/studies/curriculums/20578/info'
 URL = 'https://intuit.ru/studies/courses/1055/271/info'
 URL = 'https://intuit.ru/studies/courses/46/46/info'
 
-N_VARS = 6
+N_VARS = 1
 N_TASKS = 20
 
 """
