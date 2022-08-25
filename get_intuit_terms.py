@@ -3,25 +3,41 @@ import re
 from rutermextract import TermExtractor
 from bs4 import BeautifulSoup
 from utilites import dump, load
-from get_intuit_sentences import get_normal_form
 from _constants import COURSE
 
-te = TermExtractor()
-
-try:
-    word_normal_form  = load('word_normal_form.json')
-except FileNotFoundError:
-    word_normal_form = {}
+def _filter_term(term):
+    wrong_grammemes = {'ADJF', 'LATN', 'UNKN', 'NUMB', 'NUMR' }
     
+    word = term.words[0].parsed
+    
+    return len(term.words) > 1 and \
+           len(word.tag.grammemes & wrong_grammemes) == 0 
+
+def _normalize_terms_weights(kw):
+    import numpy as np
+    res = []
+
+    max_weight, min_weight = kw[0][1], kw[-1][1]
+    a, b = np.polyfit([max_weight, min_weight], [1, 0.1], 1)
+    for term, weight in kw:
+        normalized_weight = max(0, a * weight + b)
+        res += [[str(term), normalized_weight]]
+        
+    return res
+    
+def get_text_keywords(a_text):
+    from rutermextract import TermExtractor
+    te = TermExtractor()
+    kw = [ (term, term.count) for term in te(a_text) if _filter_term(term) ]
+    
+    return _normalize_terms_weights(kw)
+
 text = BeautifulSoup(open('in/%s.html' % COURSE).read(),'lxml').text
 
-terms = te(text)
-terms = [ (str(t), t.count) for t in te(text) if str(t).count(" ") > 1 and len(re.sub(r'[a-z0-9]', '', str(t)).strip())/len(str(t)) > 3/4 ]
+terms = get_text_keywords(text)
 out = []
 for term in terms:
-    if [ word for word in term[0].split() if len(word) < 3 ]:
-        pass
-    else:
-       out += [term[0]]
+    if term[1] > .2:
+        out += [term[0]]
         
 dump(out, 'intuit_terms.json')

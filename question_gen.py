@@ -13,7 +13,7 @@ te = TermExtractor()
 questions = {}
 
 candidates = []
-for sent_id in sentences.keys():
+for sent_id in sentences.keys():    
     text_a = sentences[sent_id]["tokens"]
     for element in structure.keys():
         text_b = structure[element]

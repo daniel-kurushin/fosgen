@@ -1,5 +1,12 @@
 import re
 import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.linspace(0,100,100)
+y = np.random.random(100)
+
+plt.plot(x,y)
+plt.show()
 
 from bs4 import BeautifulSoup
 from utilites import dump, load

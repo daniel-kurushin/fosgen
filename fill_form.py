@@ -44,36 +44,6 @@ def pk_table():
 def n_task():
     return [str(sum(structure_table_dict.values()))]
     
-def get_questions(n):
-    rez = []
-    m = 1
-    for competence in questions_by_competence.keys():
-        k = 0
-        for question in list(questions_by_competence[competence].keys())[n-1::4]:
-            k += 1
-            answers = [
-                (questions[question][2], 1),
-                (questions[question][3][0], 0),
-                (questions[question][3][1], 0),
-                (questions[question][3][2], 0),
-            ]
-            j, a = 0, "ъ"
-            q = "%s. %s \n\n" % (m, questions[question][0])
-            m += 1
-            np.random.shuffle(answers)
-            for item in ITEMS:
-                q += "\t%s) %s \n\n" % (item, answers[j][0])
-                if answers[j][1]:
-                    a = item
-                j += 1
-            q += "\n"
-            key_table_dict.update({(n,k):a})
-            rez += [q]
-        if n == 1: 
-            structure_table_dict.update({competence:k})
-        
-    return rez
-
 def variants():
     q_keys = list(questions.keys())
     needed_comps = {}
@@ -84,7 +54,7 @@ def variants():
     rez = []
     i = 0
     for v in range(N_VARS):
-        rez += ["# Тест по дисциплине «%s», вариант %s." % (COURSE, v)]
+        rez += ["# Тест по дисциплине «%s», вариант %s." % (COURSE, v + 1)]
         rez += ["Выберите вариант, наиболее подходящий для заполнения пропуска."]
         for t in range(N_TASKS):
             text, competence, answer, wrong = questions[q_keys[i]]
